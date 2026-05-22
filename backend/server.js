@@ -2,7 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import {GameManager} from './GameManager.js';
+import { GameManager } from './Gamemanager';
 import { create } from 'domain';
 
 const app = express();
