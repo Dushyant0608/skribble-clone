@@ -149,13 +149,16 @@ const Canvas = forwardRef(({ isDrawer, toolSettings }, ref) => {
   return (
     <canvas
       ref={canvasRef}
-      width={700}
+      width={800}
       height={500}
       style={{
         background: '#ffffff',
         borderRadius: '8px',
         cursor: isDrawer ? 'crosshair' : 'default',
-        display: 'block'
+        display: 'block',
+        width: '800px',
+        height: '500px',
+        maxWidth: '100%'
       }}
     />
   )
