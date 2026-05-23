@@ -19,3 +19,8 @@ export const words = [
     'library', 'volcano', 'lighthouse', 'airport', 'stadium',
     'hospital', 'waterfall', 'pyramid', 'igloo', 'castle',
   ]
+
+  export function getRandomWords(count = 3) {
+    const shuffled = [...words].sort(() => Math.random() - 0.5)
+    return shuffled.slice(0, count)
+  }

@@ -1,4 +1,4 @@
-import { getRandomWords } from './words.js'
+import { getRandomWords } from './word.js'
 
 export class Room {
   constructor(id, host, settings, io) {
