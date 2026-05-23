@@ -73,12 +73,14 @@ const Canvas = forwardRef(({ isDrawer, toolSettings }, ref) => {
     const ctx = canvas.getContext('2d')
 
     const getPos = (e) => {
-      const rect = canvas.getBoundingClientRect()
-      return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      }
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
     }
+}
 
     const onMouseDown = (e) => {
       if (!isDrawer) return
