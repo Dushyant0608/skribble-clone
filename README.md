@@ -53,28 +53,19 @@ Browser (Guesser) ──guess──► Server ──check + score──► All B
 | Deployment | Render (both services) |
 
 ---
-
 ## 🏗️ Architecture
-Frontend (React + Vite)                Backend (Node.js + Express)
-|                                          |
-|        WebSocket (Socket.io)             |
-|◄────────────────────────────────────────►|
-|                                          |
-socket.js                              GameManager.js
-(singleton)                            (all active rooms)
-|                                          |
-App.jsx                                  Room.js
-(screen routing)                         (game state, scoring,
-|                                    turn logic, timer)
-┌────┴────┐                                     |
-│         │                               words.js
-Home.jsx  Lobby.jsx                          (word list)
-│
-Game.jsx
-(orchestrates game UI)
-┌───────┼───────┬───────┐
-│       │       │       │
-Canvas  Toolbar   Chat   Scores
+
+```
+Frontend (React + Vite)          Backend (Node.js + Express)
+        |                                    |
+        |     WebSocket (Socket.io)          |
+        |◄──────────────────────────────────►|
+        |                                    |
+   socket.js                        GameManager.js
+   App.jsx                          Room.js
+   pages/                           words.js
+   components/
+```
 
 **No database** — all game state is held in two Maps on the server:
 - `rooms Map` → roomId → Room object
@@ -154,28 +145,27 @@ No environment variables needed for backend locally.
 ---
 
 ## 🗂️ Project Structure
-skribble-clone/
-│
-├── backend/
-│   ├── server.js          # Express + Socket.io entry point
-│   ├── GameManager.js     # Manages all active rooms
-│   ├── Room.js            # Room state, game logic, scoring, timer
-│   └── words.js           # Word list + random word selector
-│
-└── frontend/
-└── src/
-├── socket.js          # Socket.io singleton (autoConnect: false)
-├── App.jsx            # Screen-based routing (home/lobby/game)
-├── pages/
-│   ├── Home.jsx       # Create / join room
-│   ├── Lobby.jsx      # Waiting room + player list
-│   └── Game.jsx       # Main game screen, phase orchestration
-└── components/
-├── Canvas.jsx     # HTML5 Canvas + stroke sync + undo
-├── Toolbar.jsx    # Drawing tools + color picker
-└── Chat.jsx       # Chat + guess input + auto scroll
 
----
+```
+skribble-clone/
+├── backend/
+│   ├── server.js
+│   ├── GameManager.js
+│   ├── Room.js
+│   └── words.js
+└── frontend/
+    └── src/
+        ├── socket.js
+        ├── App.jsx
+        ├── pages/
+        │   ├── Home.jsx
+        │   ├── Lobby.jsx
+        │   └── Game.jsx
+        └── components/
+            ├── Canvas.jsx
+            ├── Toolbar.jsx
+            └── Chat.jsx
+```---
 
 ## 🌐 Live Deployment
 
