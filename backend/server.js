@@ -13,7 +13,11 @@ app.get('/' , (req,res)=>{
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-    cors: {origin: '*', methods:['GET','POST']}
+    cors: {origin: [
+        'https://skribble-clone-2.onrender.com',
+        'https://localhost:5173'
+    ], 
+    methods:['GET','POST']}
 });
 
 const gameManager = new GameManager(io);
