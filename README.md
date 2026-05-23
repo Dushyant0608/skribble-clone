@@ -165,7 +165,8 @@ skribble-clone/
             ├── Canvas.jsx
             ├── Toolbar.jsx
             └── Chat.jsx
-```---
+```
+---
 
 ## 🌐 Live Deployment
 
