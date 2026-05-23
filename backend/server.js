@@ -35,4 +35,4 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => gameManager.handleDisconnect(socket))
   })
   
-  httpServer.listen(3001, () => console.log('Server on port 3001'))
+  httpServer.listen(process.env.PORT || 3001, () => console.log(`Server on port ${process.env.PORT || 3001}`))
