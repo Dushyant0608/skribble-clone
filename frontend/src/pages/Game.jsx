@@ -7,13 +7,13 @@ import Chat from '../components/Chat.jsx'
 export default function Game({ roomData, playerData, setScreen }) {
   const [phase, setPhase] = useState('choosing')
   const [players, setPlayers] = useState([])
-  const [drawer, setDrawer] = useState(null)
-  const [drawerName, setDrawerName] = useState('')
-  const [wordOptions, setWordOptions] = useState([])
+  const [drawer, setDrawer] = useState(roomData?.roundData?.drawerId || null)
+  const [drawerName, setDrawerName] = useState(roomData?.roundData?.drawerName || '')
+  const [wordOptions, setWordOptions] = useState(roomData?.wordOptions || [])
   const [wordLength, setWordLength] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
-  const [round, setRound] = useState(1)
-  const [totalRounds, setTotalRounds] = useState(1)
+  const [round, setRound] = useState(roomData?.roundData?.round || 1)
+  const [totalRounds, setTotalRounds] = useState(roomData?.roundData?.totalRounds || 1)
   const [roundEndWord, setRoundEndWord] = useState('')
   const [winner, setWinner] = useState(null)
   const [leaderboard, setLeaderboard] = useState([])
@@ -35,7 +35,6 @@ export default function Game({ roomData, playerData, setScreen }) {
       setTotalRounds(data.totalRounds)
       setPhase('choosing')
       setMessages([])
-      // clear canvas for new round
       if (canvasRef.current) canvasRef.current.clearCanvas()
     })
 
@@ -86,7 +85,6 @@ export default function Game({ roomData, playerData, setScreen }) {
       setPhase('gameOver')
     })
 
-    // drawing events for guessers
     socket.on('draw_start', (data) => {
       if (canvasRef.current) canvasRef.current.startStroke(data)
     })
@@ -123,7 +121,7 @@ export default function Game({ roomData, playerData, setScreen }) {
       socket.off('canvas_clear')
       socket.off('draw_undo')
     }
-  }, [])
+  }, [playerData])
 
   const handleWordChoice = (word) => {
     socket.emit('word_chosen', { word })
@@ -134,7 +132,7 @@ export default function Game({ roomData, playerData, setScreen }) {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '100%',
+      height: '80vh',
       flexDirection: 'column',
       gap: '20px'
     }}>
@@ -170,9 +168,7 @@ export default function Game({ roomData, playerData, setScreen }) {
   )
 
   const renderDrawing = () => (
-    <div style={{ display: 'flex', gap: '16px', height: '100%' }}>
-
-      {/* Left — Player list */}
+    <div style={{ display: 'flex', gap: '16px', height: '90vh' }}>
       <div style={{
         width: '160px',
         display: 'flex',
@@ -192,9 +188,7 @@ export default function Game({ roomData, playerData, setScreen }) {
         ))}
       </div>
 
-      {/* Center — Canvas */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {/* Top bar */}
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -203,17 +197,10 @@ export default function Game({ roomData, playerData, setScreen }) {
           padding: '10px 16px',
           borderRadius: '8px'
         }}>
+          <span style={{ color: '#888' }}>Round {round} / {totalRounds}</span>
+          <span style={{ color: '#fff', fontSize: '20px', fontWeight: 'bold' }}>{timeLeft}s</span>
           <span style={{ color: '#888' }}>
-            Round {round} / {totalRounds}
-          </span>
-          <span style={{ color: '#fff', fontSize: '20px', fontWeight: 'bold' }}>
-            {timeLeft}s
-          </span>
-          <span style={{ color: '#888' }}>
-            {isDrawer
-              ? 'You are drawing'
-              : '_ '.repeat(wordLength).trim()
-            }
+            {isDrawer ? 'You are drawing' : '_ '.repeat(wordLength).trim()}
           </span>
         </div>
 
@@ -232,7 +219,6 @@ export default function Game({ roomData, playerData, setScreen }) {
         )}
       </div>
 
-      {/* Right — Chat */}
       <div style={{ width: '220px' }}>
         <Chat
           messages={messages}
@@ -240,7 +226,6 @@ export default function Game({ roomData, playerData, setScreen }) {
           wordLength={wordLength}
         />
       </div>
-
     </div>
   )
 
@@ -250,7 +235,7 @@ export default function Game({ roomData, playerData, setScreen }) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '100%',
+      height: '80vh',
       gap: '20px'
     }}>
       <h2 style={{ color: '#fff' }}>Round Over!</h2>
@@ -284,7 +269,7 @@ export default function Game({ roomData, playerData, setScreen }) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '100%',
+      height: '80vh',
       gap: '20px'
     }}>
       <h1 style={{ color: '#00C896' }}>Game Over!</h1>

@@ -14,6 +14,15 @@ export default function Lobby({ roomData, playerData, setScreen, setRoomData }) 
 
     socket.on('round_start', (data) => {
       setRoomData(prev => ({ ...prev, roundData: data }))
+      // Non-drawer switches immediately; drawer waits for word_options
+      if (data.drawerId !== playerData?.id) {
+        setScreen('game')
+      }
+    })
+
+    socket.on('word_options', (data) => {
+      setRoomData(prev => ({ ...prev, wordOptions: data.words }))
+      // Drawer switches now — words are stored in roomData
       setScreen('game')
     })
 
@@ -28,6 +37,7 @@ export default function Lobby({ roomData, playerData, setScreen, setRoomData }) 
     return () => {
       socket.off('players_update')
       socket.off('round_start')
+      socket.off('word_options')
       socket.off('host_changed')
       socket.off('error')
     }

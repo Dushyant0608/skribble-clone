@@ -29,6 +29,9 @@ export class GameManager {
     this.socketToRoom.set(socket.id, roomId)
 
     socket.join(roomId)
+    console.log('socket joined room:', socket.id, roomId)
+    const rooms = socket.rooms
+    console.log('socket.rooms after join:', rooms)
 
     socket.emit('room_created', {
       roomId,
@@ -58,6 +61,8 @@ export class GameManager {
     room.addPlayer(socket.id, playerName)
     this.socketToRoom.set(socket.id, roomId.toUpperCase())
     socket.join(roomId.toUpperCase())
+    console.log('socket joined room:', socket.id, roomId.toUpperCase())
+    console.log('socket.rooms after join:', socket.rooms)
 
     socket.emit('room_joined', {
       roomId: room.id,

@@ -53,6 +53,11 @@ export class Room {
     const drawerIndex = (this.currentRound - 1) % this.drawerOrder.length
     this.currentDrawer = this.drawerOrder[drawerIndex]
 
+    console.log('startRound called, round:', this.currentRound)
+  console.log('drawer:', this.currentDrawer)
+  console.log('room id:', this.id)
+  console.log('players in room:', this.players)
+
     const wordOptions = getRandomWords(this.settings.wordCount)
 
     // tell everyone a new round started
